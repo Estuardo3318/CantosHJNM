@@ -12,6 +12,25 @@
 </head>
 <body>
     <iframe src="https://mozilla.github.io/pdf.js/legacy/web/viewer.html?file=
-    https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CantosHJNM.pdf"></iframe>
+    https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf"></iframe>
+
+    <script>
+        // Esto hace que al refrescar, el visor se reinicie por completo
+        const iframe = document.getElementById('pdf-iframe');
+        
+        // Guardar la URL original sin el estado (#)
+        const urlOriginal = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CantosHJNM.pdf";
+        
+        // Al cargar la página, recargar el iframe con la URL limpia
+        window.addEventListener('load', function() {
+            iframe.src = urlOriginal;
+        });
+        
+        // Opcional: También forzar reinicio cuando la página se muestra de nuevo (al volver a la pestaña)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                iframe.src = urlOriginal;
+            }
+        });
 </body>
 </html>     
