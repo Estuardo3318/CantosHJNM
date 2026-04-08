@@ -15,10 +15,29 @@
     https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf"></iframe>
 
     <script>
-        // Reemplazar TIMESTAMP con la fecha/hora actual
-        const iframe = document.querySelector('iframe');
-        const urlBase = "https://mozilla.github.io/pdf.js/legacy/web/viewer.html?file=https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf";
-        iframe.src = `${urlBase}&_=${Date.now()}`;
+        const iframe = document.getElementById('pdf-iframe');
+        const pdfUrl = "https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf";
+        const viewerUrl = "https://mozilla.github.io/pdf.js/legacy/web/viewer.html";
+        
+        function cargarVisor() {
+            // Limpiar el iframe completamente
+            iframe.src = "about:blank";
+            
+            setTimeout(() => {
+                // Recargar con URL completamente nueva
+                const timestamp = Date.now();
+                const url = `${viewerUrl}?file=${encodeURIComponent(pdfUrl)}&clean=${timestamp}`;
+                iframe.src = url;
+            }, 50);
+        }
+        
+        // Cargar al inicio
+        cargarVisor();
+        
+        // Reiniciar al refrescar
+        window.addEventListener('pageshow', function() {
+            cargarVisor();
+        });
     </script>
 </body>
 </html>     
