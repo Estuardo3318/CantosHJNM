@@ -15,22 +15,32 @@
     https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf"></iframe>
 
     <script>
-        // Esto hace que al refrescar, el visor se reinicie por completo
         const iframe = document.getElementById('pdf-iframe');
+        const urlBase = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf";
         
-        // Guardar la URL original sin el estado (#)
-        const urlOriginal = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf";
+        // Función para reiniciar el visor a su estado original
+        function reiniciarVisor() {
+            // Recargar el iframe con la URL limpia (sin #page= ni &zoom=)
+            iframe.src = urlBase;
+        }
         
-        // Al cargar la página, recargar el iframe con la URL limpia
-        window.addEventListener('load', function() {
-            iframe.src = urlOriginal;
-        });
+        // 1. Al cargar la página por primera vez
+        window.addEventListener('load', reiniciarVisor);
         
-        // Opcional: También forzar reinicio cuando la página se muestra de nuevo (al volver a la pestaña)
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                iframe.src = urlOriginal;
+        // 2. Cuando la página se refresca (el navegador la recarga)
+        window.addEventListener('pageshow', function(event) {
+            // Si la página viene de caché (refresco)
+            if (event.persisted) {
+                reiniciarVisor();
             }
         });
+        
+        // 3. Opcional: también al volver a la pestaña (borra cambios)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                reiniciarVisor();
+            }
+        });
+    </script>
 </body>
 </html>     
