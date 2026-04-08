@@ -11,35 +11,27 @@
     
 </head>
 <body>
-    <iframe src="https://mozilla.github.io/pdf.js/legacy/web/viewer.html?file=
+    <iframe id="pdf-iframe" src="https://mozilla.github.io/pdf.js/legacy/web/viewer.html?file=
     https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf"></iframe>
 
     <script>
         const iframe = document.getElementById('pdf-iframe');
-        const urlBase = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf";
+        const pdfUrl = "https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf";
+        const baseViewer = "https://mozilla.github.io/pdf.js/web/viewer.html";
         
-        // Función para reiniciar el visor a su estado original
-        function reiniciarVisor() {
-            // Recargar el iframe con la URL limpia (sin #page= ni &zoom=)
-            iframe.src = urlBase;
+        function cargarVisorLimpio() {
+            // Agregar un número aleatorio para evitar cualquier caché o estado guardado
+            const timestamp = Date.now();
+            const urlLimpia = `${baseViewer}?file=${encodeURIComponent(pdfUrl)}&_=${timestamp}`;
+            iframe.src = urlLimpia;
         }
         
-        // 1. Al cargar la página por primera vez
-        window.addEventListener('load', reiniciarVisor);
+        // Cargar el visor limpio cada vez que se abre la página
+        cargarVisorLimpio();
         
-        // 2. Cuando la página se refresca (el navegador la recarga)
-        window.addEventListener('pageshow', function(event) {
-            // Si la página viene de caché (refresco)
-            if (event.persisted) {
-                reiniciarVisor();
-            }
-        });
-        
-        // 3. Opcional: también al volver a la pestaña (borra cambios)
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                reiniciarVisor();
-            }
+        // También reiniciar cuando la página se muestra (por si acaso)
+        window.addEventListener('pageshow', function() {
+            cargarVisorLimpio();
         });
     </script>
 </body>
