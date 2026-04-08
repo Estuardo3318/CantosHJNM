@@ -17,21 +17,19 @@
     <script>
         const iframe = document.getElementById('pdf-iframe');
         const pdfUrl = "https://raw.githubusercontent.com/estuardo3318/CantosHJNM/main/CANTOSHJNM.pdf";
-        const baseViewer = "https://mozilla.github.io/pdf.js/web/viewer.html";
+        const viewerUrl = "https://mozilla.github.io/pdf.js/legacy/web/viewer.html";
         
-        function cargarVisorLimpio() {
-            // Agregar un número aleatorio para evitar cualquier caché o estado guardado
+        function cargarVisor() {
             const timestamp = Date.now();
-            const urlLimpia = `${baseViewer}?file=${encodeURIComponent(pdfUrl)}&_=${timestamp}`;
-            iframe.src = urlLimpia;
+            iframe.src = `${viewerUrl}?file=${encodeURIComponent(pdfUrl)}&_=${timestamp}`;
         }
         
-        // Cargar el visor limpio cada vez que se abre la página
-        cargarVisorLimpio();
+        // Cargar al inicio
+        cargarVisor();
         
-        // También reiniciar cuando la página se muestra (por si acaso)
+        // Reiniciar al refrescar o volver a la página
         window.addEventListener('pageshow', function() {
-            cargarVisorLimpio();
+            cargarVisor();
         });
     </script>
 </body>
