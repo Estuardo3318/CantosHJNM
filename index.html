@@ -20,14 +20,21 @@
         const viewerUrl = "https://mozilla.github.io/pdf.js/legacy/web/viewer.html";
         
         function cargarVisor() {
-            const timestamp = Date.now();
-            iframe.src = `${viewerUrl}?file=${encodeURIComponent(pdfUrl)}&_=${timestamp}`;
+            // Limpiar el iframe completamente
+            iframe.src = "about:blank";
+            
+            setTimeout(() => {
+                // Recargar con URL completamente nueva
+                const timestamp = Date.now();
+                const url = `${viewerUrl}?file=${encodeURIComponent(pdfUrl)}&clean=${timestamp}`;
+                iframe.src = url;
+            }, 50);
         }
         
         // Cargar al inicio
         cargarVisor();
         
-        // Reiniciar al refrescar o volver a la página
+        // Reiniciar al refrescar
         window.addEventListener('pageshow', function() {
             cargarVisor();
         });
